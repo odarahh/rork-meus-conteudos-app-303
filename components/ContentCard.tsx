@@ -33,18 +33,11 @@ const ContentCard: React.FC<ContentCardProps> = ({
   
   return (
     <View style={[styles.card, { backgroundColor: isDark ? '#121212' : '#F5F5F5' }]} testID="content-card">
-      <View style={styles.cardHeader}>
-        <View style={styles.contentRow}>
-          <Image source={{ uri: imageUri }} style={styles.thumbnail} />
-          
-          <View style={styles.contentInfo}>
-            <Text style={[styles.title, { color: isDark ? '#FFFFFF' : '#000000' }]} numberOfLines={2}>{title}</Text>
-            
-            <View style={styles.deadlineContainer}>
-              <Calendar color={isDark ? '#AAAAAA' : '#666666'} size={16} />
-              <Text style={[styles.deadlineText, { color: isDark ? '#AAAAAA' : '#666666' }]}>até {deadline}</Text>
-            </View>
-          </View>
+      <View style={styles.topRow}>
+        <Image source={{ uri: imageUri }} style={styles.thumbnail} />
+        
+        <View style={styles.titleContainer}>
+          <Text style={[styles.title, { color: isDark ? '#FFFFFF' : '#000000' }]} numberOfLines={2}>{title}</Text>
         </View>
         
         <View style={styles.menuContainer}>
@@ -52,6 +45,22 @@ const ContentCard: React.FC<ContentCardProps> = ({
             onFavorite={onFavoritePress}
             onStar={onStarPress}
           />
+        </View>
+      </View>
+      
+      <View style={styles.secondRow}>
+        <View style={styles.deadlineContainer}>
+          <Calendar color={isDark ? '#AAAAAA' : '#666666'} size={16} />
+          <Text style={[styles.deadlineText, { color: isDark ? '#AAAAAA' : '#666666' }]}>até {deadline}</Text>
+        </View>
+        
+        <View style={styles.progressInfo}>
+          <Text style={[styles.progressText, { color: isDark ? '#FFFFFF' : '#000000' }]}>
+            {currentProgress}/{totalLessons}
+          </Text>
+          <Text style={[styles.percentageText, { color: progressColor }]}>
+            • {Math.round((currentProgress / totalLessons) * 100)}%
+          </Text>
         </View>
       </View>
       
@@ -79,13 +88,10 @@ const styles = StyleSheet.create({
     padding: 16,
     marginBottom: 16,
   },
-  cardHeader: {
+  topRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  contentRow: {
-    flexDirection: 'row',
-    flex: 1,
+    alignItems: 'flex-start',
+    marginBottom: 8,
   },
   thumbnail: {
     width: 60,
@@ -93,14 +99,23 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginRight: 12,
   },
-  contentInfo: {
+  titleContainer: {
     flex: 1,
     justifyContent: 'center',
   },
   title: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 4,
+  },
+  menuContainer: {
+    marginLeft: 8,
+  },
+  secondRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
+    marginLeft: 72,
   },
   deadlineContainer: {
     flexDirection: 'row',
@@ -110,10 +125,17 @@ const styles = StyleSheet.create({
     marginLeft: 4,
     fontSize: 14,
   },
-  menuContainer: {
-    position: 'absolute',
-    right: 0,
-    top: 0,
+  progressInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  progressText: {
+    fontSize: 14,
+  },
+  percentageText: {
+    marginLeft: 4,
+    fontSize: 14,
+    fontWeight: 'bold',
   },
   accessButton: {
     borderRadius: 8,
