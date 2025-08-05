@@ -48,6 +48,14 @@ const ContentCard: React.FC<ContentCardProps> = ({
         </View>
       </View>
       
+      <View style={styles.progressBarContainer}>
+        <ProgressBar 
+          current={currentProgress} 
+          total={totalLessons} 
+          color={progressColor}
+        />
+      </View>
+      
       <View style={styles.secondRow}>
         <View style={styles.deadlineContainer}>
           <Calendar color={isDark ? '#AAAAAA' : '#666666'} size={16} />
@@ -63,12 +71,6 @@ const ContentCard: React.FC<ContentCardProps> = ({
           </Text>
         </View>
       </View>
-      
-      <ProgressBar 
-        current={currentProgress} 
-        total={totalLessons} 
-        color={progressColor}
-      />
       
       <TouchableOpacity 
         style={[styles.accessButton, { backgroundColor: isDark ? '#333333' : '#E5E5E5' }]} 
@@ -109,6 +111,10 @@ const styles = StyleSheet.create({
   },
   menuContainer: {
     marginLeft: 8,
+  },
+  progressBarContainer: {
+    marginLeft: 72,
+    marginBottom: 8,
   },
   secondRow: {
     flexDirection: 'row',
