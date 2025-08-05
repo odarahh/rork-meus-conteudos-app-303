@@ -93,11 +93,11 @@ const styles = StyleSheet.create({
   topRow: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    marginBottom: 8,
+    marginBottom: 4,
   },
   thumbnail: {
-    width: 60,
-    height: 60,
+    width: 50,
+    height: 50,
     borderRadius: 8,
     marginRight: 12,
   },
@@ -106,22 +106,23 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
+    lineHeight: 20,
   },
   menuContainer: {
     marginLeft: 8,
   },
   progressBarContainer: {
-    marginLeft: 72,
-    marginBottom: 8,
+    marginLeft: 62,
+    marginBottom: 6,
   },
   secondRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 8,
-    marginLeft: 72,
+    marginLeft: 62,
   },
   deadlineContainer: {
     flexDirection: 'row',
