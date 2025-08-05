@@ -6,6 +6,7 @@ export interface CourseData {
   currentProgress: number;
   totalLessons: number;
   progressColor: string;
+  isCompleted?: boolean;
 }
 
 export const courseData: CourseData[] = [
@@ -41,8 +42,9 @@ export const courseData: CourseData[] = [
     title: 'Seleção Performan-C',
     imageUri: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2940&auto=format&fit=crop',
     deadline: '15/12/2025',
-    currentProgress: 13,
+    currentProgress: 93,
     totalLessons: 93,
     progressColor: '#EC4899',
+    isCompleted: true,
   },
 ];

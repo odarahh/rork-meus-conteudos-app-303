@@ -20,6 +20,10 @@ const MyContentScreen: React.FC = () => {
     console.log(`Starring course: ${courseId}`);
   };
 
+  const handleCertificatePress = (courseId: string) => {
+    console.log(`Emitting certificate for course: ${courseId}`);
+  };
+
   return (
     <View style={[styles.container, { backgroundColor: isDark ? '#000000' : '#FFFFFF' }]}>
       <Header title="Meus conteúdos" />
@@ -38,9 +42,11 @@ const MyContentScreen: React.FC = () => {
             totalLessons={item.totalLessons}
             progressPercentage={(item.currentProgress / item.totalLessons) * 100}
             progressColor={item.progressColor}
+            isCompleted={item.isCompleted}
             onAccessPress={() => handleAccessPress(item.id)}
             onFavoritePress={() => handleFavoritePress(item.id)}
             onStarPress={() => handleStarPress(item.id)}
+            onCertificatePress={() => handleCertificatePress(item.id)}
           />
         )}
         testID="course-list"

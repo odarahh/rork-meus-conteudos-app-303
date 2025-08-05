@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Calendar } from 'lucide-react-native';
+import { Calendar, Award } from 'lucide-react-native';
 import { useTheme } from '@/context/ThemeContext';
 import ProgressBar from './ProgressBar';
 import CardMenu from './CardMenu';
@@ -13,9 +13,11 @@ export interface ContentCardProps {
   totalLessons: number;
   progressPercentage: number;
   progressColor?: string;
+  isCompleted?: boolean;
   onAccessPress: () => void;
   onFavoritePress: () => void;
   onStarPress: () => void;
+  onCertificatePress?: () => void;
 }
 
 const ContentCard: React.FC<ContentCardProps> = ({
@@ -25,9 +27,11 @@ const ContentCard: React.FC<ContentCardProps> = ({
   currentProgress,
   totalLessons,
   progressColor = '#EC4899',
+  isCompleted = false,
   onAccessPress,
   onFavoritePress,
   onStarPress,
+  onCertificatePress,
 }) => {
   const { isDark } = useTheme();
   
@@ -48,29 +52,37 @@ const ContentCard: React.FC<ContentCardProps> = ({
         </View>
       </View>
       
-      <View style={styles.progressBarContainer}>
-        <ProgressBar 
-          current={currentProgress} 
-          total={totalLessons} 
-          color={progressColor}
-        />
-      </View>
-      
-      <View style={styles.secondRow}>
-        <View style={styles.deadlineContainer}>
-          <Calendar color={isDark ? '#AAAAAA' : '#666666'} size={16} />
-          <Text style={[styles.deadlineText, { color: isDark ? '#AAAAAA' : '#666666' }]}>até {deadline}</Text>
+      {!isCompleted ? (
+        <>
+          <View style={styles.progressBarContainer}>
+            <ProgressBar 
+              current={currentProgress} 
+              total={totalLessons} 
+              color={progressColor}
+            />
+          </View>
+          
+          <View style={styles.secondRow}>
+            <View style={styles.deadlineContainer}>
+              <Calendar color={isDark ? '#AAAAAA' : '#666666'} size={16} />
+              <Text style={[styles.deadlineText, { color: isDark ? '#AAAAAA' : '#666666' }]}>até {deadline}</Text>
+            </View>
+            
+            <View style={styles.progressInfo}>
+              <Text style={[styles.progressText, { color: isDark ? '#FFFFFF' : '#000000' }]}>
+                {currentProgress}/{totalLessons}
+              </Text>
+              <Text style={[styles.percentageText, { color: progressColor }]}>
+                • {Math.round((currentProgress / totalLessons) * 100)}%
+              </Text>
+            </View>
+          </View>
+        </>
+      ) : (
+        <View style={styles.completedContainer}>
+          <Text style={[styles.completedText, { color: progressColor }]}>Concluído</Text>
         </View>
-        
-        <View style={styles.progressInfo}>
-          <Text style={[styles.progressText, { color: isDark ? '#FFFFFF' : '#000000' }]}>
-            {currentProgress}/{totalLessons}
-          </Text>
-          <Text style={[styles.percentageText, { color: progressColor }]}>
-            • {Math.round((currentProgress / totalLessons) * 100)}%
-          </Text>
-        </View>
-      </View>
+      )}
       
       <TouchableOpacity 
         style={[styles.accessButton, { backgroundColor: isDark ? '#333333' : '#E5E5E5' }]} 
@@ -80,6 +92,20 @@ const ContentCard: React.FC<ContentCardProps> = ({
       >
         <Text style={[styles.accessButtonText, { color: isDark ? '#FFFFFF' : '#000000' }]}>Acessar</Text>
       </TouchableOpacity>
+      
+      {isCompleted && onCertificatePress && (
+        <TouchableOpacity 
+          style={[styles.certificateButton, { backgroundColor: isDark ? '#333333' : '#E5E5E5' }]} 
+          onPress={onCertificatePress}
+          activeOpacity={0.7}
+          testID="certificate-button"
+        >
+          <View style={styles.certificateButtonContent}>
+            <Award color={isDark ? '#FFFFFF' : '#000000'} size={16} />
+            <Text style={[styles.certificateButtonText, { color: isDark ? '#FFFFFF' : '#000000' }]}>Emitir certificado</Text>
+          </View>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
@@ -93,7 +119,7 @@ const styles = StyleSheet.create({
   topRow: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    marginBottom: 4,
+    marginBottom: 2,
   },
   thumbnail: {
     width: 50,
@@ -115,7 +141,8 @@ const styles = StyleSheet.create({
   },
   progressBarContainer: {
     marginLeft: 62,
-    marginBottom: 6,
+    marginBottom: 4,
+    marginTop: 2,
   },
   secondRow: {
     flexDirection: 'row',
@@ -153,6 +180,30 @@ const styles = StyleSheet.create({
   accessButtonText: {
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  completedContainer: {
+    marginLeft: 62,
+    marginBottom: 8,
+    marginTop: 2,
+  },
+  completedText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  certificateButton: {
+    borderRadius: 8,
+    paddingVertical: 12,
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  certificateButtonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  certificateButtonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginLeft: 8,
   },
 });
 
