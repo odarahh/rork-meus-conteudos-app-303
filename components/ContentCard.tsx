@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
   topRow: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    marginBottom: 2,
+    marginBottom: 0,
   },
   thumbnail: {
     width: 50,
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
   progressBarContainer: {
     marginLeft: 62,
     marginBottom: 4,
-    marginTop: 2,
+    marginTop: -2,
   },
   secondRow: {
     flexDirection: 'row',
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
   completedContainer: {
     marginLeft: 62,
     marginBottom: 8,
-    marginTop: 2,
+    marginTop: -2,
   },
   completedText: {
     fontSize: 16,
