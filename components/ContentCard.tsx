@@ -1,9 +1,8 @@
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Calendar, Award } from 'lucide-react-native';
+import { Calendar, Award, MoreVertical } from 'lucide-react-native';
 import { useTheme } from '@/context/ThemeContext';
 import ProgressBar from './ProgressBar';
-import CardMenu from './CardMenu';
 
 export interface ContentCardProps {
   title: string;
@@ -19,6 +18,7 @@ export interface ContentCardProps {
   onAccessPress: () => void;
   onFavoritePress: () => void;
   onStarPress: () => void;
+  onMenuPress: () => void;
   onCertificatePress?: () => void;
 }
 
@@ -35,6 +35,7 @@ const ContentCard: React.FC<ContentCardProps> = ({
   onAccessPress,
   onFavoritePress,
   onStarPress,
+  onMenuPress,
   onCertificatePress,
 }) => {
   const { isDark } = useTheme();
@@ -49,13 +50,9 @@ const ContentCard: React.FC<ContentCardProps> = ({
         </View>
         
         <View style={styles.menuContainer}>
-          <CardMenu 
-            courseTitle={title}
-            onFavorite={onFavoritePress}
-            onStar={onStarPress}
-            isFavorited={isFavorited}
-            isStarred={isStarred}
-          />
+          <TouchableOpacity onPress={onMenuPress} style={styles.menuButton} testID="card-menu-button">
+            <MoreVertical color={isDark ? '#FFFFFF' : '#000000'} size={20} />
+          </TouchableOpacity>
         </View>
       </View>
       
@@ -145,6 +142,9 @@ const styles = StyleSheet.create({
   },
   menuContainer: {
     marginLeft: 8,
+  },
+  menuButton: {
+    padding: 4,
   },
   progressBarContainer: {
     marginLeft: 62,

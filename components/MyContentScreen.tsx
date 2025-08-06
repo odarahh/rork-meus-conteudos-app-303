@@ -3,12 +3,15 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import { useTheme } from '@/context/ThemeContext';
 import Header from './Header';
 import ContentCard from './ContentCard';
+import ContentMenu from './ContentMenu';
 import { courseData } from '@/mocks/courseData';
 
 const MyContentScreen: React.FC = () => {
   const { isDark } = useTheme();
   const [favoritedCourses, setFavoritedCourses] = useState<Set<string>>(new Set());
   const [starredCourses, setStarredCourses] = useState<Set<string>>(new Set());
+  const [selectedCourse, setSelectedCourse] = useState<string | null>(null);
+  const [menuVisible, setMenuVisible] = useState<boolean>(false);
 
   const handleAccessPress = (courseId: string) => {
     console.log(`Accessing course: ${courseId}`);
@@ -46,6 +49,31 @@ const MyContentScreen: React.FC = () => {
     console.log(`Emitting certificate for course: ${courseId}`);
   };
 
+  const handleMenuPress = (courseId: string) => {
+    setSelectedCourse(courseId);
+    setMenuVisible(true);
+    console.log(`Opening menu for course: ${courseId}`);
+  };
+
+  const handleMenuClose = () => {
+    setMenuVisible(false);
+    setSelectedCourse(null);
+  };
+
+  const handleMenuFavorite = () => {
+    if (selectedCourse) {
+      handleFavoritePress(selectedCourse);
+    }
+  };
+
+  const handleMenuStar = () => {
+    if (selectedCourse) {
+      handleStarPress(selectedCourse);
+    }
+  };
+
+  const selectedCourseData = selectedCourse ? courseData.find(course => course.id === selectedCourse) : null;
+
   return (
     <View style={[styles.container, { backgroundColor: isDark ? '#000000' : '#FFFFFF' }]}>
       <Header title="Meus conteúdos" />
@@ -70,11 +98,24 @@ const MyContentScreen: React.FC = () => {
             onAccessPress={() => handleAccessPress(item.id)}
             onFavoritePress={() => handleFavoritePress(item.id)}
             onStarPress={() => handleStarPress(item.id)}
+            onMenuPress={() => handleMenuPress(item.id)}
             onCertificatePress={() => handleCertificatePress(item.id)}
           />
         )}
         testID="course-list"
       />
+      
+      {selectedCourseData && (
+        <ContentMenu
+          visible={menuVisible}
+          courseTitle={selectedCourseData.title}
+          onClose={handleMenuClose}
+          onFavorite={handleMenuFavorite}
+          onStar={handleMenuStar}
+          isFavorited={favoritedCourses.has(selectedCourse!)}
+          isStarred={starredCourses.has(selectedCourse!)}
+        />
+      )}
     </View>
   );
 };
