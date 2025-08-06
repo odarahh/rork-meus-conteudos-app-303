@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { useTheme } from '@/context/ThemeContext';
 import Header from './Header';
@@ -7,17 +7,39 @@ import { courseData } from '@/mocks/courseData';
 
 const MyContentScreen: React.FC = () => {
   const { isDark } = useTheme();
+  const [favoritedCourses, setFavoritedCourses] = useState<Set<string>>(new Set());
+  const [starredCourses, setStarredCourses] = useState<Set<string>>(new Set());
 
   const handleAccessPress = (courseId: string) => {
     console.log(`Accessing course: ${courseId}`);
   };
 
   const handleFavoritePress = (courseId: string) => {
-    console.log(`Adding course to favorites: ${courseId}`);
+    setFavoritedCourses(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(courseId)) {
+        newSet.delete(courseId);
+        console.log(`Removed course from favorites: ${courseId}`);
+      } else {
+        newSet.add(courseId);
+        console.log(`Added course to favorites: ${courseId}`);
+      }
+      return newSet;
+    });
   };
 
   const handleStarPress = (courseId: string) => {
-    console.log(`Starring course: ${courseId}`);
+    setStarredCourses(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(courseId)) {
+        newSet.delete(courseId);
+        console.log(`Removed star from course: ${courseId}`);
+      } else {
+        newSet.add(courseId);
+        console.log(`Starred course: ${courseId}`);
+      }
+      return newSet;
+    });
   };
 
   const handleCertificatePress = (courseId: string) => {
@@ -43,6 +65,8 @@ const MyContentScreen: React.FC = () => {
             progressPercentage={(item.currentProgress / item.totalLessons) * 100}
             progressColor={item.progressColor}
             isCompleted={item.isCompleted}
+            isFavorited={favoritedCourses.has(item.id)}
+            isStarred={starredCourses.has(item.id)}
             onAccessPress={() => handleAccessPress(item.id)}
             onFavoritePress={() => handleFavoritePress(item.id)}
             onStarPress={() => handleStarPress(item.id)}

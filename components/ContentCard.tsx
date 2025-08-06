@@ -14,6 +14,8 @@ export interface ContentCardProps {
   progressPercentage: number;
   progressColor?: string;
   isCompleted?: boolean;
+  isFavorited?: boolean;
+  isStarred?: boolean;
   onAccessPress: () => void;
   onFavoritePress: () => void;
   onStarPress: () => void;
@@ -28,6 +30,8 @@ const ContentCard: React.FC<ContentCardProps> = ({
   totalLessons,
   progressColor = '#EC4899',
   isCompleted = false,
+  isFavorited = false,
+  isStarred = false,
   onAccessPress,
   onFavoritePress,
   onStarPress,
@@ -46,8 +50,11 @@ const ContentCard: React.FC<ContentCardProps> = ({
         
         <View style={styles.menuContainer}>
           <CardMenu 
+            courseTitle={title}
             onFavorite={onFavoritePress}
             onStar={onStarPress}
+            isFavorited={isFavorited}
+            isStarred={isStarred}
           />
         </View>
       </View>
