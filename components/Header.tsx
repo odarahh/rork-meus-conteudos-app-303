@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useRouter } from 'expo-router';
-import { ArrowLeft, Sun, Menu } from 'lucide-react-native';
+import { ArrowLeft, Sun, Moon, Menu } from 'lucide-react-native';
 import { useTheme } from '@/context/ThemeContext';
 
 interface HeaderProps {
@@ -30,7 +30,11 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
           onPress={toggleTheme}
           testID="theme-toggle"
         >
-          <Sun color={isDark ? '#FFFFFF' : '#000000'} size={24} />
+          {isDark ? (
+            <Moon color="#FFFFFF" size={24} />
+          ) : (
+            <Sun color="#000000" size={24} />
+          )}
         </TouchableOpacity>
         
         <TouchableOpacity style={styles.menuButton} testID="menu-button">
