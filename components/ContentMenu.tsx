@@ -37,7 +37,6 @@ const ContentMenu: React.FC<ContentMenuProps> = ({
   const { isDark } = useTheme();
   const translateY = useRef(new Animated.Value(MENU_HEIGHT)).current;
   const opacity = useRef(new Animated.Value(0)).current;
-  const currentTranslateY = useRef(MENU_HEIGHT);
 
   const panResponder = useRef(
     PanResponder.create({
@@ -45,8 +44,7 @@ const ContentMenu: React.FC<ContentMenuProps> = ({
         return Math.abs(gestureState.dy) > 5;
       },
       onPanResponderGrant: () => {
-        translateY.setOffset(currentTranslateY.current);
-        translateY.setValue(0);
+        translateY.setOffset(translateY._value);
       },
       onPanResponderMove: (_, gestureState) => {
         if (gestureState.dy > 0) {
@@ -64,9 +62,7 @@ const ContentMenu: React.FC<ContentMenuProps> = ({
             useNativeDriver: Platform.OS !== 'web',
             tension: 100,
             friction: 8,
-          }).start(() => {
-            currentTranslateY.current = 0;
-          });
+          }).start();
         }
       },
     })
@@ -86,7 +82,6 @@ const ContentMenu: React.FC<ContentMenuProps> = ({
         friction: 8,
       }),
     ]).start(() => {
-      currentTranslateY.current = MENU_HEIGHT;
       onClose();
     });
   };
@@ -106,15 +101,12 @@ const ContentMenu: React.FC<ContentMenuProps> = ({
             tension: 100,
             friction: 8,
           }),
-        ]).start(() => {
-          currentTranslateY.current = 0;
-        });
+        ]).start();
       };
       openMenu();
     } else {
       translateY.setValue(MENU_HEIGHT);
       opacity.setValue(0);
-      currentTranslateY.current = MENU_HEIGHT;
     }
   }, [visible, translateY, opacity]);
 
